@@ -96,6 +96,21 @@ public class BenderTest {
     }
 
     @Test
+    public void test26() {
+        String mapa = "" +
+                "#######\n" +
+                "#   # #\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "#$  #X#\n" +
+                "#######";
+        Bender bender = new Bender(mapa);
+        assertEquals("El robot a entrado en bucle", bender.run());
+    }
+
+    @Test
     public void test24() {
         String mapa = "" +
                 "#######\n" +
@@ -237,5 +252,21 @@ public class BenderTest {
                 "#######";
         Bender bender = new Bender(mapa);
         assertEquals("SEENNNNNWWWWSSSS", bender.run());
+    }
+
+    @Test
+    public void test14() {
+        String mapa = "" +
+                "#######\n" +
+                "#T    #\n" +
+                "#     #########\n" +
+                "#     #        #\n" +
+                "#     #$      T#\n" +
+                "#     #########\n" +
+                "#  X###\n" +
+                "#  I  #\n" +
+                "#######";
+        Bender bender = new Bender(mapa);
+        assertEquals("SEEWWWWNNNNNNNNWWWWWW", bender.run());
     }
 }

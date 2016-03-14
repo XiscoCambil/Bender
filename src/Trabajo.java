@@ -5,12 +5,13 @@ public class Trabajo {
     public static void main(String[] args) {
         String mapa = "" +
                 "#######\n" +
-                "#     #\n" +
-                "#     #\n" +
-                "#     #\n" +
-                "#     #\n" +
+                "#T    #\n" +
+                "#     #########\n" +
+                "#     #       #\n" +
+                "#     #$     T#\n" +
+                "#     #########\n" +
                 "#  X###\n" +
-                "#$ T  #\n" +
+                "#  I  #\n" +
                 "#######";
         Bender bender = new Bender(mapa);
 
@@ -29,6 +30,7 @@ class Bender {
     private final String mapa;
     private int verticalX;
     private int horizontalX;
+    private String direccion = "SENW";
 
 
     public Bender(String mapa) {
@@ -39,7 +41,6 @@ class Bender {
         int[] posicionX = LocalizarX();
         verticalX = posicionX[0];
         horizontalX = posicionX[1];
-
 
     }
 
@@ -65,6 +66,7 @@ class Bender {
         }
         return caracter;
     }
+    
 
     private char[][] CrearMapa() {
         tablero = new char[alturaMapa][anchoMapa];
@@ -80,24 +82,27 @@ class Bender {
 
     public String run() {
         String resultado = "";
-        String direccion = "SENW";
         int contador = 0;
+        int pasos = 0;
         salir:
         while (true) {
             if (tablero[verticalX][horizontalX] == '$') {
                 break salir;
+            }else if (pasos > AreaMapa()){
+                return "El robot a entrado en bucle";
             } else if (Teleporter()) {
                 LocalizacionT();
             } else if (Invertir()) {
                 contador = 0;
-                direccion = InvertirDireccion(direccion);
+                direccion = InvertirDireccion();
             }
             if((Obstaculo(direccion.charAt(contador)))) {
                 contador = 0;
-                contador = ResolverObstaculo(contador, direccion);
+                contador = ResolverObstaculo(contador);
             }
             resultado += direccion.charAt(contador);
             MoverX(direccion.charAt(contador));
+            pasos++;
         }
         return resultado;
     }
@@ -132,7 +137,7 @@ class Bender {
         return false;
     }
 
-    private int ResolverObstaculo(int contador, String direccion) {
+    private int ResolverObstaculo(int contador) {
         boolean obstaculos = Obstaculo(direccion.charAt(contador));
         while (obstaculos) {
             obstaculos = Obstaculo(direccion.charAt(contador));
@@ -178,13 +183,25 @@ class Bender {
         return tablero[verticalX][horizontalX] == 'I';
     }
 
-    private String InvertirDireccion(String direccion) {
+    private String InvertirDireccion() {
         String cambio;
         cambio = direccion.substring(0, 2);
         direccion = direccion.substring(2, 4);
         direccion += cambio;
 
         return direccion;
+    }
+
+    private int AreaMapa() {
+        int area = 0;
+        for (int i = 0; i < alturaMapa; i++) {
+            for (int j = 0; j < anchoMapa; j++) {
+                if (tablero[i][j] == ' ') {
+                    area++;
+                }
+            }
+        }
+        return area;
     }
 
     @Override
