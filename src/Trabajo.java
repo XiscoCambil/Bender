@@ -5,17 +5,17 @@ public class Trabajo {
     public static void main(String[] args) {
         String mapa = "" +
                 "#######\n" +
-                "#    I#\n" +
                 "#     #\n" +
                 "#     #\n" +
-                "#  $ T#\n" +
+                "#     #\n" +
+                "#     #\n" +
                 "#  X###\n" +
-                "#I    #\n" +
+                "#$ T  #\n" +
                 "#######";
         Bender bender = new Bender(mapa);
 
         Bender b = new Bender(mapa);
-       System.out.println(b.run());
+        System.out.println(b.run());
         System.out.print(b);
 
     }
@@ -27,8 +27,8 @@ class Bender {
     private final int alturaMapa;
     private final int anchoMapa;
     private final String mapa;
-    private  int verticalX;
-    private  int horizontalX;
+    private int verticalX;
+    private int horizontalX;
 
 
     public Bender(String mapa) {
@@ -82,41 +82,23 @@ class Bender {
         String resultado = "";
         String direccion = "SENW";
         int contador = 0;
-        boolean obstaculos;
-        boolean ganar = false;
-        String cambio;
         salir:
-        while (!ganar) {
-            obstaculos = Obstaculo(direccion.charAt(contador));
+        while (true) {
             if (tablero[verticalX][horizontalX] == '$') {
                 break salir;
             } else if (Teleporter()) {
-
                 LocalizacionT();
-
             } else if (Invertir()) {
                 contador = 0;
-                cambio = direccion.substring(0, 2);
-                direccion = direccion.substring(2, 4);
-                direccion += cambio;
-                if (obstaculos) {
-                    while (obstaculos) {
-                        obstaculos = Obstaculo(direccion.charAt(contador));
-                        contador = (obstaculos) ? contador + 1 : contador;
-                    }
-                }
-
-                } else if (obstaculos) {
-                    contador = 0;
-                    while (obstaculos) {
-                        obstaculos = Obstaculo(direccion.charAt(contador));
-                        contador = (obstaculos) ? contador + 1 : contador;
-                    }
-                }
-                resultado += direccion.charAt(contador);
-                MoverX(direccion.charAt(contador));
+                direccion = InvertirDireccion(direccion);
             }
-
+            if((Obstaculo(direccion.charAt(contador)))) {
+                contador = 0;
+                contador = ResolverObstaculo(contador, direccion);
+            }
+            resultado += direccion.charAt(contador);
+            MoverX(direccion.charAt(contador));
+        }
         return resultado;
     }
 
@@ -150,6 +132,15 @@ class Bender {
         return false;
     }
 
+    private int ResolverObstaculo(int contador, String direccion) {
+        boolean obstaculos = Obstaculo(direccion.charAt(contador));
+        while (obstaculos) {
+            obstaculos = Obstaculo(direccion.charAt(contador));
+            contador = (obstaculos) ? contador + 1 : contador;
+        }
+        return contador;
+    }
+
     private void MoverX(char direccion) {
         switch (direccion) {
             case 'S':
@@ -172,11 +163,10 @@ class Bender {
     }
 
     private void LocalizacionT() {
-        int[] localizacionT = new int[2];
         for (int i = 0; i < alturaMapa; i++) {
             for (int j = 0, c = 0; j < anchoMapa; j++, c++) {
                 if (tablero[i][j] == 'T' && i != verticalX && j != horizontalX) {
-                  verticalX = i;
+                    verticalX = i;
                     horizontalX = j;
                     return;
                 }
@@ -184,8 +174,17 @@ class Bender {
         }
     }
 
-    private boolean Invertir(){
+    private boolean Invertir() {
         return tablero[verticalX][horizontalX] == 'I';
+    }
+
+    private String InvertirDireccion(String direccion) {
+        String cambio;
+        cambio = direccion.substring(0, 2);
+        direccion = direccion.substring(2, 4);
+        direccion += cambio;
+
+        return direccion;
     }
 
     @Override
