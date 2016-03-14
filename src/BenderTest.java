@@ -80,6 +80,21 @@ public class BenderTest {
         assertEquals("SEEWWWW", bender.run());
     }
 
+    @Test
+    public void test24() {
+        String mapa = "" +
+                "#######\n" +
+                "#    I#\n" +
+                "#     #\n" +
+                "#   X #\n" +
+                "#I    #\n" +
+                "#     #\n" +
+                "#  $  #\n" +
+                "#######";
+        Bender bender = new Bender(mapa);
+        assertEquals("SSSENNNNNWWWWSSSSSEE", bender.run());
+    }
+
 
     @Test
     public void test06() {

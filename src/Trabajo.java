@@ -5,7 +5,7 @@ public class Trabajo {
     public static void main(String[] args) {
         String mapa = "" +
                 "#######\n" +
-                "#T    #\n" +
+                "#    I#\n" +
                 "#     #\n" +
                 "#     #\n" +
                 "#  $ T#\n" +
@@ -85,8 +85,6 @@ class Bender {
         boolean obstaculos;
         boolean ganar = false;
         String cambio;
-        int contadorInvertir = 0;
-        int[] teleporter;
         salir:
         while (!ganar) {
             obstaculos = Obstaculo(direccion.charAt(contador));
@@ -94,29 +92,30 @@ class Bender {
                 break salir;
             } else if (Teleporter()) {
 
-                teleporter = LocalizacionT();
-                verticalX = teleporter[0];
-                horizontalX = teleporter[1];
+                LocalizacionT();
 
-            } else if(Invertir() && contadorInvertir < 1) {
-
-            cambio = direccion.substring(0,2);
-                direccion = direccion.substring(2,4);
+            } else if (Invertir()) {
+                contador = 0;
+                cambio = direccion.substring(0, 2);
+                direccion = direccion.substring(2, 4);
                 direccion += cambio;
-                contador = 0;
-                contadorInvertir = 1;
-                continue;
-
-            }else if (obstaculos) {
-                contador = 0;
-                while (obstaculos) {
-                   obstaculos= Obstaculo(direccion.charAt(contador));
-                    contador = (obstaculos) ? contador + 1 : contador;
+                if (obstaculos) {
+                    while (obstaculos) {
+                        obstaculos = Obstaculo(direccion.charAt(contador));
+                        contador = (obstaculos) ? contador + 1 : contador;
+                    }
                 }
+
+                } else if (obstaculos) {
+                    contador = 0;
+                    while (obstaculos) {
+                        obstaculos = Obstaculo(direccion.charAt(contador));
+                        contador = (obstaculos) ? contador + 1 : contador;
+                    }
+                }
+                resultado += direccion.charAt(contador);
+                MoverX(direccion.charAt(contador));
             }
-            resultado += direccion.charAt(contador);
-            MoverX(direccion.charAt(contador));
-        }
 
         return resultado;
     }
@@ -172,17 +171,17 @@ class Bender {
         return tablero[verticalX][horizontalX] == 'T';
     }
 
-    private int[] LocalizacionT() {
+    private void LocalizacionT() {
         int[] localizacionT = new int[2];
         for (int i = 0; i < alturaMapa; i++) {
             for (int j = 0, c = 0; j < anchoMapa; j++, c++) {
                 if (tablero[i][j] == 'T' && i != verticalX && j != horizontalX) {
-                    localizacionT[0] = i;
-                    localizacionT[1] = j;
+                  verticalX = i;
+                    horizontalX = j;
+                    return;
                 }
             }
         }
-        return localizacionT;
     }
 
     private boolean Invertir(){
