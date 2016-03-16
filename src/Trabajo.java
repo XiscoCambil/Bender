@@ -6,17 +6,16 @@ public class Trabajo {
         String mapa = "" +
                 "#######\n" +
                 "#T    #\n" +
-                "#     #########\n" +
-                "#     #       #\n" +
-                "#     #$     T#\n" +
-                "#     #########\n" +
+                "#     #\n" +
+                "#     #\n" +
+                "#  $ T#\n" +
                 "#  X###\n" +
-                "#  I  #\n" +
+                "#I    #\n" +
                 "#######";
         Bender bender = new Bender(mapa);
 
         Bender b = new Bender(mapa);
-        System.out.println(b.run());
+       System.out.println(b.run());
         System.out.print(b);
 
     }
@@ -32,7 +31,6 @@ class Bender {
     private int horizontalX;
     private String direccion = "SENW";
 
-
     public Bender(String mapa) {
         this.mapa = mapa;
         alturaMapa = CalcularAltoMapa();
@@ -41,7 +39,6 @@ class Bender {
         int[] posicionX = LocalizarX();
         verticalX = posicionX[0];
         horizontalX = posicionX[1];
-
     }
 
     private int CalcularAltoMapa() {
@@ -49,7 +46,6 @@ class Bender {
         for (int i = 0; i < mapa.length(); i++) {
             if (mapa.charAt(i) == '\n') {
                 contador++;
-
             }
         }
         contador++;
@@ -60,13 +56,11 @@ class Bender {
         int i = 0;
         int caracter = 0;
         while (mapa.charAt(i) != '\n') {
-
             caracter++;
             i++;
         }
         return caracter;
     }
-    
 
     private char[][] CrearMapa() {
         tablero = new char[alturaMapa][anchoMapa];
@@ -106,7 +100,6 @@ class Bender {
         }
         return resultado;
     }
-
 
     private int[] LocalizarX() {
         int[] cordenadas = new int[2];
@@ -203,7 +196,7 @@ class Bender {
         }
         return area;
     }
-
+    //Es es una rama
     @Override
     public String toString() {
         String resultado = "";
@@ -216,3 +209,5 @@ class Bender {
         return resultado;
     }
 }
+
+
