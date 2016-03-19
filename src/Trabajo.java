@@ -5,12 +5,12 @@ public class Trabajo {
     public static void main(String[] args) {
         String mapa = "" +
                 "#######\n" +
-                "#T    #\n" +
+                "# X   #\n" +
                 "#     #\n" +
                 "#     #\n" +
-                "#  $ T#\n" +
-                "#  X###\n" +
-                "#I    #\n" +
+                "#     #\n" +
+                "# $   #\n" +
+                "#     #\n" +
                 "#######";
         Bender bender = new Bender(mapa);
 
@@ -53,26 +53,42 @@ class Bender {
     }
 
     private int CalcularAnchoMapa() {
-        int i = 0;
         int caracter = 0;
-        while (mapa.charAt(i) != '\n') {
-            caracter++;
-            i++;
+        int caracter2 = 0;
+        for (int j = 0; j < mapa.length() ; j++) {
+            if(mapa.charAt(j) != '\n'){
+                caracter++;
+            }else{
+                if(caracter > caracter2){
+                    caracter2 = caracter;
+                    caracter = 0;
+                }else{
+                    caracter = 0;
+                }
+            }
         }
-        return caracter;
+        return caracter2;
     }
 
     private char[][] CrearMapa() {
         tablero = new char[alturaMapa][anchoMapa];
         int linea = 0;
-        for (int i = 0; i < alturaMapa; i++) {
-            for (int j = 0, c = 0; j < anchoMapa; j++, c++) {
-                tablero[i][j] = mapa.charAt(c + linea);
+        for (int j = 0; j < alturaMapa ; j++) {
+            int i = 0;
+            int c = 0;
+            while (mapa.charAt(i+linea) != '\n') {
+                if(j == alturaMapa-1 && i+linea == mapa.length()-1){
+                    tablero[j][c] = mapa.charAt(i+linea);
+                    break;
+                }
+                tablero[j][c] = mapa.charAt(i+linea);
+                i++;
+                c++;
             }
-            linea += anchoMapa + 1;
+            linea += c+1 ;
         }
         return tablero;
-    }
+        }
 
     public String run() {
         String resultado = "";

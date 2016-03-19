@@ -259,14 +259,14 @@ public class BenderTest {
         String mapa = "" +
                 "#######\n" +
                 "#T    #\n" +
-                "#     #########\n" +
-                "#     #        #\n" +
-                "#     #$      T#\n" +
-                "#     #########\n" +
+                "#     #############\n" +
+                "#     #           #\n" +
+                "#     #$         T#\n" +
+                "#     #############\n" +
                 "#  X###\n" +
                 "#  I  #\n" +
                 "#######";
         Bender bender = new Bender(mapa);
-        assertEquals("SEEWWWWNNNNNNNNWWWWWW", bender.run());
+        assertEquals("SNNNNNNWWWWWWWWWWWW", bender.run());
     }
 }
