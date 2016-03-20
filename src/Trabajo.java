@@ -53,21 +53,21 @@ class Bender {
     }
 
     private int CalcularAnchoMapa() {
-        int caracter = 0;
-        int caracter2 = 0;
+        int linea = 0;
+        int lineaGrande = 0;
         for (int j = 0; j < mapa.length() ; j++) {
             if(mapa.charAt(j) != '\n'){
-                caracter++;
+                linea++;
             }else{
-                if(caracter > caracter2){
-                    caracter2 = caracter;
-                    caracter = 0;
+                if(linea > lineaGrande){
+                    lineaGrande = linea;
+                    linea = 0;
                 }else{
-                    caracter = 0;
+                    linea = 0;
                 }
             }
         }
-        return caracter2;
+        return lineaGrande;
     }
 
     private char[][] CrearMapa() {
@@ -75,17 +75,15 @@ class Bender {
         int linea = 0;
         for (int j = 0; j < alturaMapa ; j++) {
             int i = 0;
-            int c = 0;
             while (mapa.charAt(i+linea) != '\n') {
                 if(j == alturaMapa-1 && i+linea == mapa.length()-1){
-                    tablero[j][c] = mapa.charAt(i+linea);
+                    tablero[j][i] = mapa.charAt(i+linea);
                     break;
                 }
-                tablero[j][c] = mapa.charAt(i+linea);
+                tablero[j][i] = mapa.charAt(i+linea);
                 i++;
-                c++;
             }
-            linea += c+1 ;
+            linea += i+1 ;
         }
         return tablero;
         }
@@ -95,15 +93,12 @@ class Bender {
         String resultado = "";
         int contador = 0;
         int pasos = 0;
-        salir:
-        while (true) {
-            if (tablero[verticalX][horizontalX] == '$') {
-                break salir;
-            }else if (pasos > AreaMapa()){
+        while (tablero[verticalX][horizontalX] != '$') {
+             if (pasos > AreaMapa()){
                 return "El robot a entrado en bucle";
-            } else if (Teleporter()) {
+            } else if (HayTeleporter()) {
                 LocalizacionT();
-            } else if (Invertir()) {
+            } else if (HayInvertir()) {
                 contador = 0;
                 direccion = InvertirDireccion();
             }
@@ -133,6 +128,23 @@ class Bender {
         return cordenadas;
     }
 
+    private void MoverX(char direccion) {
+        switch (direccion) {
+            case 'S':
+                verticalX += 1;
+                break;
+            case 'E':
+                horizontalX += 1;
+                break;
+            case 'N':
+                verticalX -= 1;
+                break;
+            case 'W':
+                horizontalX -= 1;
+                break;
+        }
+    }
+
     private boolean Obstaculo(char direccion) {
         switch (direccion) {
             case 'S':
@@ -156,30 +168,15 @@ class Bender {
         return contador;
     }
 
-    private void MoverX(char direccion) {
-        switch (direccion) {
-            case 'S':
-                verticalX += 1;
-                break;
-            case 'E':
-                horizontalX += 1;
-                break;
-            case 'N':
-                verticalX -= 1;
-                break;
-            case 'W':
-                horizontalX -= 1;
-                break;
-        }
-    }
 
-    private boolean Teleporter() {
+
+    private boolean HayTeleporter() {
         return tablero[verticalX][horizontalX] == 'T';
     }
 
     private void LocalizacionT() {
         for (int i = 0; i < alturaMapa; i++) {
-            for (int j = 0, c = 0; j < anchoMapa; j++, c++) {
+            for (int j = 0; j < anchoMapa; j++) {
                 if (tablero[i][j] == 'T' && i != verticalX && j != horizontalX) {
                     verticalX = i;
                     horizontalX = j;
@@ -189,7 +186,7 @@ class Bender {
         }
     }
 
-    private boolean Invertir() {
+    private boolean HayInvertir() {
         return tablero[verticalX][horizontalX] == 'I';
     }
 
