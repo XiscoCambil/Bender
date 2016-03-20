@@ -222,7 +222,7 @@ public class Bender {
         return area;
     }
 
-    //Override del metodo String para imprimir la array en forma de String.
+    //Override del metodo ToString para imprimir la array en forma de String.
     @Override
     public String toString() {
         String resultado = "";
